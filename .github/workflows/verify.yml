@@ -1,0 +1,32 @@
+name: Verify CPDV JSON Corpus
+
+on:
+  push:
+    branches: [master, main]
+  pull_request:
+    branches: [master, main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: Verify 73 Books & Metadata against SacredBible.org
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Verify committed CPDV-JSON corpus (raw HTML parity + books.json)
+        run: python src/verify_cpdv.py --html-dir .cache/html
+
+      - name: Test --clean normalization pipeline
+        run: |
+          python src/encode_cpdv.py --clean --output-dir .cache/clean-json --html-dir .cache/html
+          python src/verify_cpdv.py --json-dir .cache/clean-json --html-dir .cache/html

@@ -1,17 +1,42 @@
-#java specific
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+ENV/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Temporary HTML downloads & local caches
+*.htm
+.cache/
+
+# Java / Groovy
 *.class
 
-#netbeans ignore personal stuff 
+# NetBeans
 nbproject/private/
 
-#idea
+# IntelliJ IDEA / VS Code
 .idea/
 out/
 *.iml
+.vscode/
 
-## generic files to ignore
+# Secrets & credentials
+.env
+.env.*
+*.keystore
+*.jks
+*.pem
+*.key
+
+# OS & editor temporary files
 *~
 *.lock
-*.DS_Store
+.DS_Store
+Thumbs.db
 *.swp
 *.out
