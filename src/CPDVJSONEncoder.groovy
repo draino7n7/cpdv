@@ -21,7 +21,7 @@ def toJson(bookName, bibleMap)
 
     String genesis = fileHtml.getText("windows-1252");
 
-    def results = genesis.split("\r\n")
+    def results = genesis.split(/\r?\n/)
 
     def book = [:]
 
@@ -37,8 +37,7 @@ def toJson(bookName, bibleMap)
                 def strtIdx = endMeta + 2;
 
                 it = it.replaceAll("<BR>", "")
-                def endIdx = it.length()-1;
-                def content = it.substring(strtIdx, endIdx)
+                def content = it.substring(strtIdx)
 
                 // Create the encoder and decoder for UTF-8
                 Charset charset = Charset.forName("UTF-8");
@@ -82,14 +81,14 @@ def toJson(bookName, bibleMap)
     def jsonBuilder = new JsonBuilder(book)
 
     File fileJson = new File("CPDV-JSON/${bookName}.json")
-    fileJson.setText(jsonBuilder.toPrettyString())
+    fileJson.setText(jsonBuilder.toPrettyString(), "UTF-8")
 
     fileHtml.delete()
 }
 
 def toUrl(bookName)
 {
-    def host = "http://www.sacredbible.org/catholic/"
+    def host = "https://www.sacredbible.org/catholic/"
 
     return "${host}${bookName}.htm"
 }
@@ -186,6 +185,4 @@ println "Finished encoding CPDV Bible to JSON - ${totalTime}ms"
 
 def jsonBuilder = new JsonBuilder(bibleMap)
 File fileJson = new File("CPDV-JSON/EntireBible-CPDV.json")
-fileJson.setText(jsonBuilder.toPrettyString())
-
-
+fileJson.setText(jsonBuilder.toPrettyString(), "UTF-8")
